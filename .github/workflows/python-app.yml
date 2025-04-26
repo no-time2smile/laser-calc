@@ -21,29 +21,38 @@ jobs:
             python3-pip \
             autoconf libtool pkg-config \
             zlib1g-dev libncurses5-dev libtinfo6 \
-            libffi-dev
+            libffi-dev curl
 
       - name: Install Buildozer
         run: |
           python -m pip install --upgrade pip
           pip install buildozer==1.5.0 cython virtualenv
 
-      - name: Prepare environment
+      - name: Setup Python-for-Android
         run: |
-          mkdir -p .buildozer/android/platform
-          buildozer android clean
-          buildozer android update
+          # Создаем структуру каталогов
+          mkdir -p ~/.buildozer/android/platform
+          
+          # Клонируем python-for-android в правильную директорию
+          git clone --depth 1 --branch master \
+            https://github.com/kivy/python-for-android.git \
+            ~/.buildozer/android/platform/python-for-android
+          
+          # Проверяем установку
+          ls -la ~/.buildozer/android/platform/python-for-android
 
       - name: Build APK
         run: |
+          buildozer android clean
           buildozer -v android debug \
             -- --ndk_version=23b --sdk_version=34
+          
+          # Проверяем результат сборки
           ls -la bin/
 
       - name: Upload APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: lasercalc.apk
           path: bin/*.apk
-          retention-days: 1
+          if-no-files-found: error
