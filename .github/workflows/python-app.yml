@@ -26,28 +26,27 @@ jobs:
       - name: Install Buildozer with dependencies
         run: |
           python -m pip install --upgrade pip wheel
-          pip install buildozer cython virtualenv
+          pip install buildozer==1.5.0 cython virtualenv
           buildozer --version
 
-      - name: Force python-for-android installation
+      - name: Setup Android environment
         run: |
-          # Явно устанавливаем python-for-android
-          git clone --depth 1 --branch 2023.08.24 \
-            https://github.com/kivy/python-for-android.git \
-            ~/.buildozer/android/platform/python-for-android
-          
-          # Проверяем структуру папок
-          ls -la ~/.buildozer/android/platform/
+          mkdir -p ~/.buildozer/android/platform
+          buildozer android clean
+          buildozer android update
 
       - name: Build APK with debug info
         run: |
-          buildozer android clean
           buildozer -v android debug \
             -- --ndk_version=23b --sdk_version=34
           ls -la bin/
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
+        with:
+          name: lasercalc.apk
+          path: bin/*.apk
+          if-no-files-found: error
         with:
           name: lasercalc.apk
           path: bin/*.apk
