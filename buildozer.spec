@@ -10,7 +10,7 @@ orientation = portrait
 fullscreen = 0
 
 # Актуальные параметры Android
-android.archs = armeabi-v7a, arm64-v8a  # Поддержка ARM архитектур
-android.ndk = 23b  # Версия NDK
-android.minapi = 21  # Минимальная версия Android (5.0 Lollipop)
-android.targetapi = 34  # Целевая версия Android (актуальная)
+android.archs = armeabi-v7a, arm64-v8a
+android.ndk = 23b  
+android.minapi = 21  
+android.targetapi = 34
