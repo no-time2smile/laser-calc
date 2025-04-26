@@ -4,7 +4,6 @@ package.name = lasercalc
 package.domain = org.example
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
-[app]
 source.include_patterns = *.py,*.png,*.jpg,*.kv
 requirements = python3, kivy==2.1.0, numpy  # numpy часто требуется для расчетов
 android.arch = armeabi-v7a  # архитектура ARM
